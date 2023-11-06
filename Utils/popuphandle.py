@@ -38,17 +38,21 @@ class PopupHandle:
         print("glance_over_handle")
         glance_over_element = self.utils.find_element_safe(By.XPATH, "//*[contains(@text,'精选')]", default=None)
         if glance_over_element is None:
-            glance_over_element = self.utils.find_element_safe(By.XPATH, "//*[contains(@text,'搜一搜#')]", default=None)
+            glance_over_element = self.utils.find_element_safe(By.XPATH, "//*[contains(@text,'搜一搜')]", default=None)
             if glance_over_element is None:
                 print("精选 和 搜一搜 都没有找到")
                 return
-        text: str = glance_over_element.get_attribute('text') # type: ignore
-        print("找到了" + text) 
+        text: str = glance_over_element.get_attribute('text')  # type: ignore
+        print("找到了" + text)
         button = glance_over_element.parent.find_element(By.XPATH, "//*[contains(@text,'去完成')]")
         button.click()
         print("点击去完成浏览")
         time.sleep(3)
         index_arr = text.split('(')[1].split(')')[0].split('/')
+
+        search_title = self.utils.find_element_safe(By.XPATH, "//*[@text,'搜索']", default=None)
+        if search_title is not None:
+            self.send_keys_handle()
         callback()
         return [int(index_arr[0]), int(index_arr[1])]
 
@@ -57,6 +61,7 @@ class PopupHandle:
         print("send_keys_handle")
 
         searchBtn = self.utils.find_element_safe(By.XPATH, "//*[@text,'搜索']", default=None)
+
         if searchBtn is None:
             return False
         print("找到了 搜索 按钮")
