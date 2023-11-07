@@ -33,17 +33,16 @@ class Utils:
         y = self.driver.get_window_size()['height']
         return x, y
 
-    def back_baba_farm(self, stop=False):
+    def back_baba_farm(self, default=0):
         time.sleep(3)
         self.driver.back()
-        if stop is True:
-            return
+
         tutu_btn = self.find_element_safe(By.XPATH, "//*[@text,'兔兔小铺']")
         together_btn = self.find_element_safe(By.XPATH, "//*[@text,'合种']")
-        if tutu_btn and together_btn:
+        if tutu_btn is not None and together_btn is not None:
             print("返回到了芭芭农场首页")
         else:
-            self.back_baba_farm(True)
+            self.back_baba_farm()
 
     '''向下滑动'''
 
@@ -66,21 +65,24 @@ class Utils:
             print("没有找到列表，也就没办法下滑")
 
         listview = find_elements_safe(listview_wrap, By.CLASS_NAME, "android.view.View")
-        if listview is not None:
-            print("listview 的长度", len(listview))
-            self.swip_down([listview[3], listview[2]])
-            print("第一次下滑")
-            self.swip_down([listview[5], listview[4]])
-            print("第二次下滑")
-            self.swip_down([listview[5], listview[4]])
-            print("第三次下滑")
-        else:
-            self.swip_down()
-            print("第一次下滑")
-            self.swip_down()
-            print("第二次下滑")
-            self.swip_down()
-            print("第三次下滑")
+        get_fuli_text = self.find_element_safe(By.XPATH, "//*[@text,'浏览得福利']")
+        get_feiliao_text = self.find_element_safe(By.XPATH, "//*[@text,'浏览得肥料']")
+        if get_fuli_text is not None or get_feiliao_text is not None:
+            if listview is not None:
+                print("listview 的长度", len(listview))
+                self.swip_down([listview[3], listview[2]])
+                print("第一次下滑")
+                self.swip_down([listview[5], listview[4]])
+                print("第二次下滑")
+                self.swip_down([listview[5], listview[4]])
+                print("第三次下滑")
+            else:
+                self.swip_down()
+                print("第一次下滑")
+                self.swip_down()
+                print("第二次下滑")
+                self.swip_down()
+                print("第三次下滑")
         self.back_baba_farm()
 
     '''向左滑动'''

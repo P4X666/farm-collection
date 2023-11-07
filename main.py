@@ -64,9 +64,11 @@ print("进入农场")
 dialogHandle = DialogHandle(driver, commonUtils)
 dialogHandle.dialog_handle()
 
-driver.tap([(180, 1600)], 10)
+window_size = commonUtils.get_size()
+print(window_size)
+driver.tap([(180/1210 * window_size[0], 1600/2700 * window_size[1])], 10)
 print("点击兔子刨土收集肥料")
-time.sleep(2)
+time.sleep(4)
 
 popUp = PopupHandle(driver, commonUtils)
 # 从下面弹窗popup

@@ -36,13 +36,14 @@ class PopupHandle:
     # 浏览视频
     def glance_over_handle(self, callback):
         print("glance_over_handle")
-        glance_over_element = self.utils.find_element_safe(By.XPATH, "//*[contains(@text,'精选')]", default=None)
+        element_path = "//*[contains(@text,'浏览15秒得')]/../.."
+        glance_over_element = self.utils.find_element_safe(By.XPATH, element_path, default=None)
         if glance_over_element is None:
-            glance_over_element = self.utils.find_element_safe(By.XPATH, "//*[contains(@text,'搜一搜')]", default=None)
-            if glance_over_element is None:
-                print("精选 和 搜一搜 都没有找到")
-                return
-        text: str = glance_over_element.get_attribute('text')  # type: ignore
+            print("浏览15秒得 没有找到")
+            return
+        text_node_path = "//*[contains(@text,'浏览15秒得')]/../../android.widget.TextView"
+        text_node = self.utils.find_element_safe(By.XPATH, text_node_path, default=None)
+        text: str = text_node.get_attribute('text')  # type: ignore
         print("找到了" + text)
         button = glance_over_element.parent.find_element(By.XPATH, "//*[contains(@text,'去完成')]")
         button.click()
@@ -65,6 +66,7 @@ class PopupHandle:
         if searchBtn is None:
             return False
         print("找到了 搜索 按钮")
+        searchBtn.click()
         searchInput = self.utils.find_element_safe(By.CLASS_NAME, 'android.widget.EditText', default=None)
         if searchInput is None:
             return False
