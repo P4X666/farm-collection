@@ -33,16 +33,29 @@ class PopupHandle:
         self.send_keys_handle()
         callback()
 
+    # 每日签到
+    def sign_in(self):
+        button = self.utils.find_element_safe(By.XPATH, "//*[@text,'去签到']")
+        if button is not None:
+            button.click()
+            time.sleep(3)
+
     # 浏览视频
     def glance_over_handle(self, callback):
         print("glance_over_handle")
+        self.sign_in()
         element_path = "//*[contains(@text,'浏览15秒得')]/../.."
         glance_over_element = self.utils.find_element_safe(By.XPATH, element_path, default=None)
         if glance_over_element is None:
             print("浏览15秒得 没有找到")
-            return
+            glance_over_element = self.utils.find_element_safe(By.XPATH, "//*[contains(@text,'搜一搜')]", default=None)
+            if glance_over_element is None:
+                return
         text_node_path = "//*[contains(@text,'浏览15秒得')]/../../android.widget.TextView"
         text_node = self.utils.find_element_safe(By.XPATH, text_node_path, default=None)
+        if text_node is None:
+            print("没有找到内容")
+            return
         text: str = text_node.get_attribute('text')  # type: ignore
         print("找到了" + text)
         button = glance_over_element.parent.find_element(By.XPATH, "//*[contains(@text,'去完成')]")

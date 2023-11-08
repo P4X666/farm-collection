@@ -66,7 +66,7 @@ dialogHandle.dialog_handle()
 
 window_size = commonUtils.get_size()
 print(window_size)
-driver.tap([(180/1210 * window_size[0], 1600/2700 * window_size[1])], 10)
+driver.tap([(180/1210 * window_size[0], 1600/2700 * window_size[1])], 60)
 print("点击兔子刨土收集肥料")
 time.sleep(4)
 
