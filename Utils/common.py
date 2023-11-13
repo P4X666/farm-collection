@@ -4,6 +4,7 @@ import time
 from appium.webdriver.webdriver import WebDriver
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver import ActionChains
+from selenium.webdriver.common.actions.mouse_button import MouseButton
 from selenium.webdriver.common.by import By
 
 
@@ -15,11 +16,24 @@ def find_elements_safe(parent, by, value, default=None):
         return default
 
 
+def is_array(elements):
+    return type(elements) is list;
+
+
 class Utils:
     def __init__(self, driver: WebDriver):
         self.driver = driver
         # 创建TouchAction对象，并指定driver
         self.action = ActionChains(driver)
+
+    def click_x_y(self, x, y):
+        # 输入源设备列表为空
+        self.action.w3c_actions.devices = []
+        new_input = self.action.w3c_actions.add_pointer_input('touch', 'finger0')
+        new_input.create_pointer_move(x, y)
+        new_input.create_pointer_down(MouseButton.LEFT)
+        # 执行动作
+        self.action.perform()
 
     def find_element_safe(self, by, value, default=None):
         try:
@@ -96,3 +110,23 @@ class Utils:
         y2 = int(l[0] * 0.3)
         self.driver.swipe(x1, x2, y1, y2, 1000)
         time.sleep(1)
+
+    def open_baba_farm(self, attribute: str, farm_activity_name: str, callback):
+        print("attribute", attribute)
+        enter_baba_farm_elements = self.driver.find_elements(By.XPATH, "//*[@" + attribute + ",'芭芭农场']")
+        if is_array(enter_baba_farm_elements) is False:
+            return
+        enter_baba_farm_element = None
+        revers_list = enter_baba_farm_elements
+        for element in revers_list:
+            if (element.get_attribute is not None) and (element.get_attribute("name") == "芭芭农场"):
+                enter_baba_farm_element = element
+                break
+        if enter_baba_farm_element is not None:
+            print("找到了芭芭农场入口")
+            time.sleep(3)
+            enter_baba_farm_element.click()
+            print("点击了芭芭农场")
+            time.sleep(2)
+            if self.driver.current_activity == farm_activity_name:
+                callback()

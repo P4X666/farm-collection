@@ -1,8 +1,4 @@
-import random
-
-from selenium.webdriver.common.by import By
-
-from Utils.ADBCMD import ADBCMD
+# from selenium.webdriver.common.by import By
 
 # def babafarm(android):
 
@@ -25,67 +21,78 @@ from Utils.ADBCMD import ADBCMD
 # [shua15s(0x362, 0x6e6, i) for i in range(5)]
 # [shua15s(0x375, 0x79b, i) for i in range(25)]
 
-from appium import webdriver
-import time
+# from appium import webdriver
+# import time
+#
+# from Utils.common import Utils
+# from Utils.dialoghandle import DialogHandle
+from taobao.main import RunTaobaoBabaFarm
 
-from Utils.common import Utils
-from Utils.dialoghandle import DialogHandle
-from Utils.popuphandle import PopupHandle
+# desired_caps = {
+#     "platformName": "Android",  # 被测手机是安卓
+#     "platformVersion": "13",  # 手机安卓版本
+#     "deviceName": "xiaomi",  # 设备名，安卓手机可以随意填写
+#     "appPackage": "com.taobao.taobao",  # 启动APP Package名称
+#     "appActivity": "com.taobao.tao.welcome.Welcome",  # 启动Activity名称
+#     # "appActivity": "com.taobao.tao.welcome.TBMainActivity",  # 启动Activity名称 默认首页
+#     # "appActivity": "com.taobao.themis.container.app.TMSActivity",  # 跳转到芭芭农场首页
+#     "unicodeKeyboard": True,  # 使用自带输入法，输入中文时填True
+#     "resetKeyboard": True,  # 执行完程序恢复原来输入法
+#     "noReset": True,  # 不要重置App
+#     "newCommandTimeout": 6000,
+#     "automationName": "UiAutomator2"
+# }
 
-desired_caps = {
-    "platformName": "Android",  # 被测手机是安卓
-    "platformVersion": "13",  # 手机安卓版本
-    "deviceName": "xiaomi",  # 设备名，安卓手机可以随意填写
-    "appPackage": "com.taobao.taobao",  # 启动APP Package名称
-    "appActivity": "com.taobao.tao.welcome.Welcome",  # 启动Activity名称
-    "unicodeKeyboard": True,  # 使用自带输入法，输入中文时填True
-    "resetKeyboard": True,  # 执行完程序恢复原来输入法
-    "noReset": True,  # 不要重置App
-    "newCommandTimeout": 6000,
-    "automationName": "UiAutomator2"
-}
+# driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", desired_caps)
+# commonUtils = Utils(driver)
+# dialogHandle = DialogHandle(driver, commonUtils)
+# time.sleep(4)
+# print("打开淘宝")
+# dialogHandle.dialog_handle()
+# enter_baba_farm_element = driver.find_element(By.XPATH, "//*[contains(@content-desc,'芭芭农场')]")
+# print("找到了芭芭农场入口")
+# time.sleep(3)
+#
+# enter_baba_farm_element.click()
+# print("点击了芭芭农场")
 
-driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", desired_caps)
+# run_zhifubao = RunZhifubaoBabaFarm()
+# run_zhifubao.open_baba_farm()
+# print("当前的activity", run_zhifubao.driver.current_activity)
 
-time.sleep(4)
-print("打开淘宝")
-enterBabafarmElement = driver.find_element(By.XPATH, "//*[contains(@content-desc,'芭芭农场')]")
-print("找到了芭芭农场入口")
-time.sleep(3)
-enterBabafarmElement.click()
-print("点击了芭芭农场")
-
-commonUtils = Utils(driver)
-
-# 弹窗根据网速会有延时
-time.sleep(random.randint(6, 10) + 5)
-print("进入农场")
-
-dialogHandle = DialogHandle(driver, commonUtils)
-dialogHandle.dialog_handle()
-
-window_size = commonUtils.get_size()
-print(window_size)
-driver.tap([(180/1210 * window_size[0], 1600/2700 * window_size[1])], 60)
-print("点击兔子刨土收集肥料")
-time.sleep(4)
-
-popUp = PopupHandle(driver, commonUtils)
-# 从下面弹窗popup
-popUp.show_popup()
-
-# 逛一逛
-index_arr = popUp.glance_over_handle(commonUtils.swip_down_handle)
-while index_arr and index_arr[0] < index_arr[1]:
-    has_send_keys = popUp.send_keys_handle()
-    if has_send_keys is False:
-        index_arr = popUp.glance_over_handle(commonUtils.swip_down_handle)
-        # 点击搜一搜
-        popUp.click_search_search(commonUtils.swip_down_handle)
-    else:
-        commonUtils.swip_down_handle()
-
-
+run_taobao = RunTaobaoBabaFarm()
+run_taobao.open_baba_farm()
+print("当前的activity", run_taobao.driver.current_activity)
+run_taobao.driver.quit()
+# dialogHandle.dialog_handle()
+#
+# # 弹窗根据网速会有延时
+# time.sleep(random.randint(6, 10) + 5)
+# print("进入农场")
+# dialogHandle.dialog_handle()
+#
+# window_size = commonUtils.get_size()
+# print(window_size)
+# # commonUtils.click_x_y(180/1210 * window_size[0], 1600/2700 * window_size[1])
+# # driver.tap([(180/1210 * window_size[0], 1600/2700 * window_size[1])], 60)
+# print("点击兔子刨土收集肥料")
+# time.sleep(4)
+#
+# popUp = PopupHandle(driver, commonUtils)
+# # 从下面弹窗popup
+# popUp.show_popup()
+#
+# # 逛一逛
+# index_arr = popUp.glance_over_handle(commonUtils.swip_down_handle)
+# while index_arr and index_arr[0] < index_arr[1]:
+#     has_send_keys = popUp.send_keys_handle()
+#     print("当前的activity", driver.current_activity)
+#     if has_send_keys is False:
+#         index_arr = popUp.glance_over_handle(commonUtils.swip_down_handle)
+#         # 点击搜一搜
+#         popUp.click_search_search(commonUtils.swip_down_handle)
+#     else:
+#         commonUtils.swip_down_handle()
 
 # 关闭当前操作的app，不会关闭驱动对象
 # driver.close()
