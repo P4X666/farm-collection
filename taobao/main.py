@@ -12,13 +12,31 @@ import subprocess
 # 点击兔子收集肥料
 def click_rabbit():
     time.sleep(2)
+    # 定义adb命令列表
+    # adb_commands = [
+    #     'adb shell input tap 180 1600',
+    #     'adb kill-server'
+    # ]
+    # # 创建子进程执行adb命令
+    # processes = []
+    # for cmd in adb_commands:
+    #     process = subprocess.Popen(cmd, shell=True)
+    #     processes.append(process)
+    #
+    # # 等待所有子进程执行完毕
+    # for process in processes:
+    #     process.wait()
+    # 要执行的adb命令
     adb_command = 'adb shell input tap 180 1600'
-    # result = self.driver.execute_script('mobile: shell', {'command': adb_command})
-    # print(result)
+
     # 使用subprocess模块调用adb命令
-    output = subprocess.check_output(adb_command, shell=True)
-    # 打印输出结果
-    print(output.decode('utf-8'))
+    subprocess.run(adb_command, shell=True)
+    # 要执行的adb命令
+    # adb_command_kill = 'adb kill-server'
+
+    # 使用subprocess模块调用adb命令
+    # subprocess.run(adb_command_kill, shell=True)
+    print("点击兔子收集肥料")
     time.sleep(2)
 
 

@@ -22,6 +22,7 @@ def is_array(elements):
 
 class Utils:
     def __init__(self, driver: WebDriver):
+        self.is_array = is_array
         self.driver = driver
         # 创建TouchAction对象，并指定driver
         self.action = ActionChains(driver)
@@ -38,6 +39,13 @@ class Utils:
     def find_element_safe(self, by, value, default=None):
         try:
             element = self.driver.find_element(by, value)
+            return element
+        except NoSuchElementException:
+            return default
+
+    def find_elements_safe(self, by, value, default=None):
+        try:
+            element = self.driver.find_elements(by, value)
             return element
         except NoSuchElementException:
             return default
@@ -113,20 +121,22 @@ class Utils:
 
     def open_baba_farm(self, attribute: str, farm_activity_name: str, callback):
         print("attribute", attribute)
-        enter_baba_farm_elements = self.driver.find_elements(By.XPATH, "//*[@" + attribute + ",'芭芭农场']")
-        if is_array(enter_baba_farm_elements) is False:
-            return
-        enter_baba_farm_element = None
-        revers_list = enter_baba_farm_elements
-        for element in revers_list:
-            if (element.get_attribute is not None) and (element.get_attribute("name") == "芭芭农场"):
-                enter_baba_farm_element = element
-                break
-        if enter_baba_farm_element is not None:
-            print("找到了芭芭农场入口")
-            time.sleep(3)
-            enter_baba_farm_element.click()
-            print("点击了芭芭农场")
-            time.sleep(2)
-            if self.driver.current_activity == farm_activity_name:
-                callback()
+        # enter_baba_farm_elements = self.driver.find_elements(By.XPATH, "//*[@" + attribute + ",'芭芭农场']")
+        # if is_array(enter_baba_farm_elements) is False:
+        #     return
+        # enter_baba_farm_element = None
+        # revers_list = enter_baba_farm_elements
+        # for element in revers_list:
+        #     if element.get_attribute(attribute) == "芭芭农场":
+        #         enter_baba_farm_element = element
+        #         break
+        # if enter_baba_farm_element is not None:
+        #     print("找到了芭芭农场入口")
+        #     time.sleep(3)
+        #     enter_baba_farm_element.click()
+        self.driver.tap([(100, 460)], 200)
+
+        print("点击了芭芭农场")
+        time.sleep(2)
+        if self.driver.current_activity == farm_activity_name:
+            callback()

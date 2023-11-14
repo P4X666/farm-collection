@@ -12,21 +12,15 @@ class PopupHandle:
         self.utils = utils
 
     def show_popup(self):
-        attribute = "text"
-        attribute_value = "集肥料"
-        collection_element_path = "//*[@" + attribute + ",'" + attribute_value + "']"
-        element = None
-        collectionFertilizerElements = self.driver.find_elements(By.XPATH, collection_element_path)
-        for collectionFertilizerElement in collectionFertilizerElements:
-            if collectionFertilizerElement.get_attribute is not None and collectionFertilizerElement.get_attribute(
-                    attribute) == attribute_value:
-                print("找到了 集肥料 按钮")
-                collectionFertilizerElement.click()
-                print("点击了 集肥料 按钮")
-                element = collectionFertilizerElement
-                break
-        if element is not None:
-            time.sleep(3)
+        collectionFertilizerElements = self.utils.find_elements_safe(By.XPATH, "//*[@text,'集肥料']")
+        collectionElements = list(filter(lambda ele: ele.get_attribute("text") == "集肥料", collectionFertilizerElements))
+        if self.utils.is_array(collectionElements) is False or len(collectionElements) == 0:
+            print("没有找到 集肥料 按钮，退出")
+            return
+        print("找到了 集肥料 按钮")
+        collectionElements[0].click()
+        print("点击了 集肥料 按钮")
+        time.sleep(3)
 
     # 每日签到
     def sign_in(self):
